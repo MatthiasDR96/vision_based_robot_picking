@@ -4,7 +4,6 @@ import glob
 import numpy as np
 import open3d as o3d
 import pcl
-from open3d import PointCloud
 
 voxel_size = 0.01
 max_distance = 0.005
@@ -37,7 +36,7 @@ def save_pointcloud(pointcloud, filename):
 
 # Visualize pointcloud
 def show_pointcloud(pointcloud):
-    o3d.draw_geometries([pointcloud])
+    o3d.io.draw_geometries([pointcloud])
 
 
 # Multiply two transformation matrices A and B

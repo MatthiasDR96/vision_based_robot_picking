@@ -87,8 +87,9 @@ def get_object_points():
 
 # Get the intrinsic camera matrix using the point correspondences 'objpoints', and 'imgpoints'
 def calibrate_camera(objpoints, imgpoints):
+
     # Read image to get the image shape
-    img = cv2.imread('./data/camera_calibration_images/CC_image_original_1.jpg')
+    img = cv2.imread('/content/drive/My Drive/object_pose_estimation/data/camera_calibration_images/CC_image_original_1.jpg')
 
     # To grayscale
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -106,7 +107,7 @@ def calibrate_camera(objpoints, imgpoints):
     print(camera_properties['DIST'])
 
     # Save matrix in numpy format
-    np.savez("./data/matrix_files/intrinsic_camera_properties.npz", data=camera_properties)
+    np.savez("/content/drive/My Drive/object_pose_estimation/data/matrix_files/intrinsic_camera_properties.npz", data=camera_properties)
     return camera_properties
 
 
