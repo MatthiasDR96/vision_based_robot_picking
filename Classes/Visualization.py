@@ -20,7 +20,7 @@ def visualize(q_pos):
     #print(T)
 
     # Import and plot transformation matrices
-    filepath = os.path.join(os.path.abspath(os.getcwd()), '/content/drive/My Drive/object_pose_estimation/data/matrix_files/mean_baselink_camera_transformation.npy')
+    filepath = os.path.join(os.path.abspath(os.getcwd()), '/content/drive/My Drive/object_pose_estimation_online/data/matrix_files/mean_baselink_camera_transformation.npy')
     if os.path.isfile(filepath):
         bc_transform = np.load(filepath, allow_pickle=True)
         #print("\nBaselink-camera transform...\n")
@@ -30,7 +30,7 @@ def visualize(q_pos):
         #print("\nNo baselink-camera transform\n")
         pass
 
-    filepath = os.path.join(os.path.abspath(os.getcwd()), '/content/drive/My Drive/object_pose_estimation/data/matrix_files/mean_baselink_target_transformation.npy')
+    filepath = os.path.join(os.path.abspath(os.getcwd()), '/content/drive/My Drive/object_pose_estimation_online/data/matrix_files/mean_baselink_target_transformation.npy')
     if os.path.isfile(filepath):
         bt_transform = np.load(filepath, allow_pickle=True)
         print("\nBaselink-target transform...\n")
@@ -40,7 +40,7 @@ def visualize(q_pos):
         #print("No baselink-target transform\n")
         pass
 
-    filepath = os.path.join(os.path.abspath(os.getcwd()), '/content/drive/My Drive/object_pose_estimation/data/matrix_files/baselink_object_transformation.npy')
+    filepath = os.path.join(os.path.abspath(os.getcwd()), '/content/drive/My Drive/object_pose_estimation_online/data/matrix_files/baselink_object_transformation.npy')
     if os.path.isfile(filepath):
         bo_transform = np.load(filepath, allow_pickle=True)
         print("\nBaselink-object transform...\n")
@@ -50,7 +50,7 @@ def visualize(q_pos):
         #print("No baselink-object transform\n")
         pass
 
-    filepath = os.path.join(os.path.abspath(os.getcwd()), '/content/drive/My Drive/object_pose_estimation/data/matrix_files/baselink_grasp_transformation.npy')
+    filepath = os.path.join(os.path.abspath(os.getcwd()), '/content/drive/My Drive/object_pose_estimation_online/data/matrix_files/baselink_grasp_transformation.npy')
     if os.path.isfile(filepath):
         bg_transform = np.load(filepath, allow_pickle=True)
         print("\nBaselink-grasp transform...\n")
