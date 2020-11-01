@@ -1,5 +1,6 @@
 import numpy as np
 import os
+import scipy.optimize
 import sympy as sp
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
@@ -62,6 +63,43 @@ def visualize(q_pos):
 
     # Show plot
     plt.show()
+    
+    
+def inverse_kinematics(T_target, q_init):
+
+    # Forward kinematics
+    [_, _, _, _, _, T] = robot_kinematics([0, 0, 0, 0, 0, 0])
+    T = np.array(T).astype(np.float64)
+
+    # Position error
+    target = T_target[:3, -1]
+    squared_distance_to_target = np.linalg.norm(T[:3, -1]-target)
+
+    # Orientation error
+    target_orientation = T_target[:3, :3]
+    squared_distance_to_orientation = np.linalg.norm(T[:3, :3] - target_orientation)
+
+    squared_distance = squared_distance_to_target + squared_distance_to_orientation
+
+    def distance_to_target(q, T_target):
+
+        # Forward kinematics
+        [_, _, _, _, _, T] = robot_kinematics(q)
+        T = np.array(T).astype(np.float64)
+
+        # Position error
+        target = T_target[:3, -1]
+        squared_distance_to_target = np.linalg.norm(T[:3, -1] - target)
+
+        # Orientation error
+        target_orientation = T_target[:3, :3]
+        squared_distance_to_orientation = np.linalg.norm(T[:3, :3] - target_orientation)
+
+        # Total error
+        squared_distance = squared_distance_to_target + squared_distance_to_orientation
+        return squared_distance
+
+    return scipy.optimize.minimize(fun=distance_to_target, x0=q_init, args=T_target)['x']
 
 
 def robot_kinematics(q):
@@ -152,8 +190,11 @@ def plot_robot(q_, ax):
     subst = [(q[0], q_[0]), (q[1], q_[1]), (q[2], q_[2]), (q[3], q_[3]), (q[4], q_[4]), (q[5], q_[5])]
 
     # Plot joint frames and links
-    for i in range(0, 5):
-        plot_frame_t(np.array(T_[i].subs(subst)), ax, 'j' + str(i + 1))
+    #for i in range(0, 5):
+    plot_frame_t(np.array(T_[0].subs(subst)), ax, 'j' + str(0 + 1))
+    plot_frame_t(np.array(T_[1].subs(subst)), ax, 'j' + str(1 + 1))
+    plot_frame_t(np.array(T_[2].subs(subst)), ax, 'j' + str(2 + 1))
+    plot_frame_t(np.array(T_[5].subs(subst)), ax, 'j' + str(5 + 1))
     set_axes_equal(ax)
     ax.set_xlabel('X-axis')
     ax.set_ylabel('Y-axis')
