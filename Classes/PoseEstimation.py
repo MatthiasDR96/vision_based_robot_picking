@@ -53,8 +53,8 @@ def transform_pointcloud(pointcloud, transform):
 
 # Covert pointcloud from open3d format to pcl format for plane segmentation
 def pcd_to_pcl_format(pointcloud):
-    o3d.write_point_cloud('data/pointcloud_files/tmp.pcd', pointcloud)
-    return pcl.load('data/pointcloud_files/tmp.pcd')
+    o3d.io.write_point_cloud('data/pointcloud_files/tmp.pcd', pointcloud)
+    return pcl.io.load('data/pointcloud_files/tmp.pcd')
 
 
 # Convert the transformation matrix to an understandable pose
@@ -76,8 +76,8 @@ def crop_pointcloud(pointcloud):
     mask_y1 = pointcloud_[:, 1] > -1.0
     mask_y2 = pointcloud_[:, 1] < -0.5
     cropped = pointcloud_[np.multiply(np.multiply(mask_x1, mask_x2), np.multiply(mask_y1, mask_y2))]
-    pcd = PointCloud()
-    pcd.points = o3d.Vector3dVector(cropped)
+    pcd = o3d.geometry.PointCloud()
+    pcd.points = o3d.utility.Vector3dVector(cropped)
     return pcd
 
 

@@ -44,9 +44,9 @@ def visualize(q_pos):
     filepath = os.path.join(os.path.abspath(os.getcwd()), '/content/drive/My Drive/object_pose_estimation_online/data/matrix_files/baselink_object_transformation.npy')
     if os.path.isfile(filepath):
         bo_transform = np.load(filepath, allow_pickle=True)
-        #print("\nBaselink-object transform...\n")
-        #print(bo_transform)
-        #plot_frame_t(bo_transform, ax, 'O')
+        print("\nBaselink-object transform...\n")
+        print(bo_transform)
+        plot_frame_t(bo_transform, ax, 'O')
     else:
         #print("No baselink-object transform\n")
         pass
@@ -54,9 +54,9 @@ def visualize(q_pos):
     filepath = os.path.join(os.path.abspath(os.getcwd()), '/content/drive/My Drive/object_pose_estimation_online/data/matrix_files/baselink_grasp_transformation.npy')
     if os.path.isfile(filepath):
         bg_transform = np.load(filepath, allow_pickle=True)
-        #print("\nBaselink-grasp transform...\n")
-        #print(bg_transform)
-        #plot_frame_t(bg_transform, ax, 'G')
+        print("\nBaselink-grasp transform...\n")
+        print(bg_transform)
+        plot_frame_t(bg_transform, ax, 'G')
     else:
         #print("No baselink-grasp transform\n")
         pass

@@ -74,8 +74,11 @@ def invert_transform(transform):
 def find_corners(image):
     criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
     found, corners = cv2.findChessboardCorners(image, pattern, None)
-    corners2 = cv2.cornerSubPix(image, corners, (11, 11), (-1, -1), criteria)
-    return corners2
+    if found:
+      corners2 = cv2.cornerSubPix(image, corners, pattern, (-1, -1), criteria)
+      return corners2
+    else:
+      return None
 
 
 # Gives user defined object points for 1 chessboard
@@ -131,7 +134,8 @@ def calculate_reprojection_error(intrinsic_camera_matrix, objpoints, imgpoints):
 
 
 # Get the extrinsic camera calibration using the point correspondences and intrinsic camera matrix
-def extrinsic_calibration(frame, objp, corners, mtx, dist):
+def extrinsic_calibration(objp, corners, mtx, dist):
+
     # Extrinsic camera calibration
     retval, rotation_vector, translation_vector, inliers = cv2.solvePnPRansac(objp, corners, mtx, dist)
 
@@ -140,14 +144,6 @@ def extrinsic_calibration(frame, objp, corners, mtx, dist):
 
     # World origin in camera frame
     ct_transform = data_to_transform(rvec_matrix, translation_vector)
-
-    # Camera's origin in world frame
-    # camera_rotation_matrix = rvec_matrix.T
-    # camera_translation_vector = -np.dot(rvec_matrix.T, translation_vector)
-    # cam_world_transform = data_to_transform(camera_rotation_matrix, camera_translation_vector)
-
-    # Draw and display lines and text on the image
-    draw_show_on_image(frame, rotation_vector, translation_vector, mtx, dist)
 
     return ct_transform
 
@@ -201,3 +197,53 @@ def data_to_transform(r_matrix, t_position):
     mat = np.hstack((r_matrix, t_position))
     mat = np.vstack((mat, [0.0, 0.0, 0.0, 1.0]))
     return mat
+
+# Draw axis on image
+def draw_axis(img, imgpts):
+    img = cv2.line(img, tuple(imgpts[3].ravel()), tuple(imgpts[0].ravel()), (0, 0, 255), 5)
+    img = cv2.line(img, tuple(imgpts[3].ravel()), tuple(imgpts[1].ravel()), (0, 255, 0), 5)
+    img = cv2.line(img, tuple(imgpts[3].ravel()), tuple(imgpts[2].ravel()), (255, 0, 0), 5)
+    text_pos = (imgpts[0].ravel() + np.array([3.5, -7])).astype(int)
+    cv2.putText(img, 'X', tuple(text_pos), cv2.FONT_HERSHEY_PLAIN, 1, (0, 0, 255))
+    text_pos = (imgpts[1].ravel() + np.array([3.5, -7])).astype(int)
+    cv2.putText(img, 'Y', tuple(text_pos), cv2.FONT_HERSHEY_PLAIN, 1, (0, 0, 255))
+    text_pos = (imgpts[2].ravel() + np.array([3.5, -7])).astype(int)
+    cv2.putText(img, 'Z', tuple(text_pos), cv2.FONT_HERSHEY_PLAIN, 1, (0, 0, 255))
+    text_pos = (imgpts[3].ravel() + np.array([3.5, -7])).astype(int)
+    return img
+
+# Draw box on image
+def draw_box(img, imgpts):
+    img = cv2.line(img, tuple(imgpts[0].ravel()), tuple(imgpts[1].ravel()), (0, 0, 255), 3)
+    img = cv2.line(img, tuple(imgpts[1].ravel()), tuple(imgpts[2].ravel()), (0, 0, 255), 3)
+    img = cv2.line(img, tuple(imgpts[2].ravel()), tuple(imgpts[3].ravel()), (0, 0, 255), 3)
+    img = cv2.line(img, tuple(imgpts[3].ravel()), tuple(imgpts[0].ravel()), (0, 0, 255), 3)
+    img = cv2.line(img, tuple(imgpts[4].ravel()), tuple(imgpts[5].ravel()), (0, 0, 255), 3)
+    img = cv2.line(img, tuple(imgpts[5].ravel()), tuple(imgpts[6].ravel()), (0, 0, 255), 3)
+    img = cv2.line(img, tuple(imgpts[6].ravel()), tuple(imgpts[7].ravel()), (0, 0, 255), 3)
+    img = cv2.line(img, tuple(imgpts[7].ravel()), tuple(imgpts[4].ravel()), (0, 0, 255), 3)
+    return img
+
+# Draw box on image
+def draw_box1(img, imgpts):
+    img = cv2.line(img, tuple(imgpts[0].ravel()), tuple(imgpts[1].ravel()), (0, 0, 255), 3)
+    img = cv2.line(img, tuple(imgpts[1].ravel()), tuple(imgpts[2].ravel()), (0, 0, 255), 3)
+    img = cv2.line(img, tuple(imgpts[2].ravel()), tuple(imgpts[3].ravel()), (0, 0, 255), 3)
+    img = cv2.line(img, tuple(imgpts[3].ravel()), tuple(imgpts[0].ravel()), (0, 0, 255), 3)
+    img = cv2.line(img, tuple(imgpts[4].ravel()), tuple(imgpts[5].ravel()), (0, 0, 255), 3)
+    img = cv2.line(img, tuple(imgpts[5].ravel()), tuple(imgpts[6].ravel()), (0, 0, 255), 3)
+    img = cv2.line(img, tuple(imgpts[6].ravel()), tuple(imgpts[7].ravel()), (0, 0, 255), 3)
+    img = cv2.line(img, tuple(imgpts[7].ravel()), tuple(imgpts[4].ravel()), (0, 0, 255), 3)
+    img = cv2.line(img, tuple(imgpts[0].ravel()), tuple(imgpts[4].ravel()), (0, 255, 255), 3)
+    img = cv2.line(img, tuple(imgpts[1].ravel()), tuple(imgpts[5].ravel()), (0, 255, 255), 3)
+    img = cv2.line(img, tuple(imgpts[2].ravel()), tuple(imgpts[6].ravel()), (0, 255, 255), 3)
+    img = cv2.line(img, tuple(imgpts[3].ravel()), tuple(imgpts[7].ravel()), (0, 255, 255), 3)
+    return img
+
+# Draw square on image
+def draw_square(img, imgpts):
+    img = cv2.line(img, tuple(imgpts[0].ravel()), tuple(imgpts[1].ravel()), (0, 0, 255), 3)
+    img = cv2.line(img, tuple(imgpts[1].ravel()), tuple(imgpts[2].ravel()), (0, 0, 255), 3)
+    img = cv2.line(img, tuple(imgpts[2].ravel()), tuple(imgpts[3].ravel()), (0, 0, 255), 3)
+    img = cv2.line(img, tuple(imgpts[3].ravel()), tuple(imgpts[0].ravel()), (0, 0, 255), 3)
+    return img
