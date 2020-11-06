@@ -5,6 +5,8 @@ import sympy as sp
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
+''' This library contains all functions for visualizing the results.'''
+
 
 def visualize(q_pos):
 
@@ -64,43 +66,6 @@ def visualize(q_pos):
     # Show plot
     plt.show()
     
-    
-def inverse_kinematics(T_target, q_init):
-
-    # Forward kinematics
-    [_, _, _, _, _, T] = robot_kinematics([0, 0, 0, 0, 0, 0])
-    T = np.array(T).astype(np.float64)
-
-    # Position error
-    target = T_target[:3, -1]
-    squared_distance_to_target = np.linalg.norm(T[:3, -1]-target)
-
-    # Orientation error
-    target_orientation = T_target[:3, :3]
-    squared_distance_to_orientation = np.linalg.norm(T[:3, :3] - target_orientation)
-
-    squared_distance = squared_distance_to_target + squared_distance_to_orientation
-
-    def distance_to_target(q, T_target):
-
-        # Forward kinematics
-        [_, _, _, _, _, T] = robot_kinematics(q)
-        T = np.array(T).astype(np.float64)
-
-        # Position error
-        target = T_target[:3, -1]
-        squared_distance_to_target = np.linalg.norm(T[:3, -1] - target)
-
-        # Orientation error
-        target_orientation = T_target[:3, :3]
-        squared_distance_to_orientation = np.linalg.norm(T[:3, :3] - target_orientation)
-
-        # Total error
-        squared_distance = squared_distance_to_target + squared_distance_to_orientation
-        return squared_distance
-
-    return scipy.optimize.minimize(fun=distance_to_target, x0=q_init, args=T_target)['x']
-
 
 def robot_kinematics(q):
 

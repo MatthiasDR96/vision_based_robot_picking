@@ -4,6 +4,11 @@ import matplotlib.pyplot as plt
 import cv2
 import numpy as np
 
+''' This library contains all functions you can use to complete te lab. 
+You saw how you can use and call these functions in the introduction. 
+You can see here what you can use, what each function need for arguments, 
+and what it will return.'''
+
 # Chessboard pattern
 pattern = (7, 7)
 
