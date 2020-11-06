@@ -1,8 +1,12 @@
 import glob
 import math
+from math import *
 import matplotlib.pyplot as plt
 import cv2
 import numpy as np
+import imutils
+from imutils import contours
+from imutils import perspective
 
 ''' This library contains all functions you can use to complete te lab. 
 You saw how you can use and call these functions in the introduction. 

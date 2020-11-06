@@ -23,7 +23,7 @@ def visualize(q_pos):
     print(T)
 
     # Import and plot transformation matrices
-    filepath = os.path.join(os.path.abspath(os.getcwd()), '/content/drive/My Drive/object_pose_estimation_online/data/matrix_files/mean_baselink_camera_transformation.npy')
+    filepath = os.path.join(os.path.abspath(os.getcwd()), '/content/drive/My Drive/object_pose_estimation_online/data/matrix_files/baselink_camera_transformation.npy')
     if os.path.isfile(filepath):
         bc_transform = np.load(filepath, allow_pickle=True)
         print("\nBaselink-camera transform...\n")
@@ -33,7 +33,7 @@ def visualize(q_pos):
         print("\nNo baselink-camera transform\n")
         pass
 
-    filepath = os.path.join(os.path.abspath(os.getcwd()), '/content/drive/My Drive/object_pose_estimation_online/data/matrix_files/mean_baselink_target_transformation.npy')
+    filepath = os.path.join(os.path.abspath(os.getcwd()), '/content/drive/My Drive/object_pose_estimation_online/data/matrix_files/baselink_target_transformation.npy')
     if os.path.isfile(filepath):
         bt_transform = np.load(filepath, allow_pickle=True)
         print("\nBaselink-target transform...\n")
@@ -43,31 +43,11 @@ def visualize(q_pos):
         print("\nNo baselink-target transform\n")
         pass
 
-    filepath = os.path.join(os.path.abspath(os.getcwd()), '/content/drive/My Drive/object_pose_estimation_online/data/matrix_files/baselink_object_transformation.npy')
-    if os.path.isfile(filepath):
-        bo_transform = np.load(filepath, allow_pickle=True)
-        print("\nBaselink-object transform...\n")
-        print(bo_transform)
-        plot_frame_t(bo_transform, ax, 'O')
-    else:
-        #print("No baselink-object transform\n")
-        pass
-
-    filepath = os.path.join(os.path.abspath(os.getcwd()), '/content/drive/My Drive/object_pose_estimation_online/data/matrix_files/baselink_grasp_transformation.npy')
-    if os.path.isfile(filepath):
-        bg_transform = np.load(filepath, allow_pickle=True)
-        print("\nBaselink-grasp transform...\n")
-        print(bg_transform)
-        plot_frame_t(bg_transform, ax, 'G')
-    else:
-        #print("No baselink-grasp transform\n")
-        pass
-
     # Show plot
     plt.show()
     
 
-def robot_kinematics(q):
+def robot_kinematics1(q):
 
     T01 = sp.Matrix([[-sp.cos(q[0]), 0, -sp.sin(q[0]), 0.050 * sp.cos(q[0])],
                      [-sp.sin(q[0]), 0, sp.cos(q[0]), 0.050 * sp.sin(q[0])],
@@ -146,7 +126,7 @@ def plot_robot(q_, ax):
     q = [sp.Symbol('q1'), sp.Symbol('q2'), sp.Symbol('q3'), sp.Symbol('q4'), sp.Symbol('q5'), sp.Symbol('q6')]
 
     # Get robot kinematics
-    T_ = robot_kinematics(q)
+    T_ = robot_kinematics1(q)
 
     # Plot world frame
     plot_frame_t(np.identity(4), ax, 'w')
