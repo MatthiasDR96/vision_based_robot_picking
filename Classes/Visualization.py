@@ -23,7 +23,7 @@ def visualize(q_pos):
     print(T)
 
     # Import and plot transformation matrices
-    filepath = os.path.join(os.path.abspath(os.getcwd()), '/content/drive/My Drive/object_pose_estimation_online/data/matrix_files/baselink_camera_transformation.npy')
+    filepath = os.path.join(os.path.abspath(os.getcwd()), '/content/drive/My Drive/vision_based_robot_picking/data/matrix_files/baselink_camera_transformation.npy')
     if os.path.isfile(filepath):
         bc_transform = np.load(filepath, allow_pickle=True)
         print("\nBaselink-camera transform...\n")
@@ -33,7 +33,7 @@ def visualize(q_pos):
         print("\nNo baselink-camera transform\n")
         pass
 
-    filepath = os.path.join(os.path.abspath(os.getcwd()), '/content/drive/My Drive/object_pose_estimation_online/data/matrix_files/baselink_target_transformation.npy')
+    filepath = os.path.join(os.path.abspath(os.getcwd()), '/content/drive/My Drive/vision_based_robot_picking/data/matrix_files/baselink_target_transformation.npy')
     if os.path.isfile(filepath):
         bt_transform = np.load(filepath, allow_pickle=True)
         print("\nBaselink-target transform...\n")
